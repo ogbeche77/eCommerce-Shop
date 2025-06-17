@@ -2,7 +2,7 @@ import React from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import './index.css';
-import ProductList from './ProductList';
+import ProductList from './Components/ProductList/ProductList';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
