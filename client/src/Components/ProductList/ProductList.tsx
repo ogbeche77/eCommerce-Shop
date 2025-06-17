@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { Article } from "../../types";
 
-import { Category } from "../../types";
 import ArticleCard from "../ArticleCards/ArticleCard";
 import Pagination from "../Pagination/Pagination";
 import {
   Articles,
-  Brand,
   Content,
   ContentCount,
   ContentText,
   ContentTitle,
   Footer,
-  Header,
   MainContent,
   Page,
-  SearchInput,
-  Sidebar,
-  SidebarLink,
-  SidebarList,
-  SidebarListItem,
-  SidebarText,
-  SidebarTitle,
 } from "./ProductList.styles";
 
 const ArticleList: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const {
+    cartCount,
+    addToCart,
+    searchTerm,
+    setSearchTerm,
+    categories,
+    setCategories,
+  } = useOutletContext<any>();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
@@ -88,11 +88,24 @@ const ArticleList: React.FC = () => {
   }, [page, articlesPerPage]);
 
   const articleCount = categories[0]?.articleCount || 0;
-  const articles = categories.flatMap((category, i) =>
-    category?.categoryArticles?.articles.map((article, j) => (
-      <ArticleCard article={article} key={`article-${i}-${j}`} />
-    ))
+
+  // Filter articles by search term
+  const filteredArticles = (
+    categories[0]?.categoryArticles?.articles || []
+  ).filter(
+    (article: Article) =>
+      !searchTerm ||
+      article.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.variantName.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const articles = filteredArticles.map((article: Article, idx: number) => (
+    <ArticleCard
+      article={article}
+      key={`article-${idx}`}
+      onAddToCart={addToCart}
+    />
+  ));
 
   // Pagination controls
   const totalPages = Math.ceil(articleCount / articlesPerPage);
@@ -104,31 +117,7 @@ const ArticleList: React.FC = () => {
 
   return (
     <Page>
-      <Header>
-        <Brand>home24</Brand>
-        <SearchInput placeholder={"Search"} />
-      </Header>
       <MainContent>
-        <Sidebar>
-          <SidebarTitle>Kategorien</SidebarTitle>
-          {loading ? (
-            <SidebarText>Loading...</SidebarText>
-          ) : error ? (
-            <SidebarText style={{ color: "#d32f2f" }}>{error}</SidebarText>
-          ) : categories.length && categories[0]?.childrenCategories ? (
-            <SidebarList>
-              {categories[0]?.childrenCategories?.list.map(
-                ({ name, urlPath }, idx) => (
-                  <SidebarListItem key={urlPath || idx}>
-                    <SidebarLink href={`/${urlPath}`}>{name}</SidebarLink>
-                  </SidebarListItem>
-                )
-              )}
-            </SidebarList>
-          ) : (
-            <SidebarText>No categories found.</SidebarText>
-          )}
-        </Sidebar>
         <Content>
           {loading ? (
             <ContentText>Loading...</ContentText>
@@ -140,7 +129,17 @@ const ArticleList: React.FC = () => {
               <ContentCount> ({categories[0].articleCount})</ContentCount>
             </ContentTitle>
           ) : null}
-          <Articles>{articles}</Articles>
+          <Articles>
+            {filteredArticles.length === 0 && !loading && !error ? (
+              <ContentText
+                style={{ color: "#888", textAlign: "center", width: "100%" }}
+              >
+                Es wurden keine Artikel gefunden, die Ihrer Suche entsprechen.
+              </ContentText>
+            ) : (
+              articles
+            )}
+          </Articles>
           <Pagination
             page={page}
             totalPages={totalPages}

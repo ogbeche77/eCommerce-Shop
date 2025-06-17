@@ -9,7 +9,7 @@ export const ArticleCardContainer = styled("div")({
   boxShadow: "0 2px 8px rgba(15, 6, 6, 0.07)",
   padding: "1.5rem",
   margin: "1rem",
-  minWidth: "180px",
+  minWidth: "220px",
   maxWidth: "220px",
   transition: "transform 0.18s",
   ":hover": {

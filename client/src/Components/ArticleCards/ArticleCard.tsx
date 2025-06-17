@@ -9,7 +9,12 @@ import {
   ArticlePrice,
 } from "./ArticleCard.styles";
 
-const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
+interface ArticleCardProps {
+  article: Article;
+  onAddToCart?: () => void;
+}
+
+const ArticleCard: React.FC<ArticleCardProps> = ({ article, onAddToCart }) => {
   return (
     <ArticleCardContainer>
       <ArticleImage src={article.images[0].path} alt={article.name} />
@@ -17,7 +22,7 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
       <ArticlePrice>
         {formatter.format(article.prices.regular.value / 100)}
       </ArticlePrice>
-      <AddToCartButton role="button">Add to cart</AddToCartButton>
+      <AddToCartButton role="button" onClick={onAddToCart}>Add to cart</AddToCartButton>
     </ArticleCardContainer>
   );
 };
