@@ -44,18 +44,71 @@ const AppHeader: React.FC<{
 };
 
 const AppLayout: React.FC = () => {
-  const [cartCount, setCartCount] = useState(() => {
-    const stored = localStorage.getItem("cartCount");
-    return stored ? parseInt(stored, 10) : 0;
+  const [cartItems, setCartItems] = useState<
+    { article: any; quantity: number }[]
+  >(() => {
+    const stored = localStorage.getItem("cartItems");
+    return stored ? JSON.parse(stored) : [];
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const addToCart = () => setCartCount((c) => c + 1);
+  const addToCart = (article: any) => {
+    setCartItems((items) => {
+      const idx = items.findIndex(
+        (i) =>
+          i.article.name === article.name &&
+          i.article.variantName === article.variantName
+      );
+      if (idx > -1) {
+        return items.map((item, i) =>
+          i === idx ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...items, { article, quantity: 1 }];
+    });
+  };
+
+  const removeFromCart = (article: any) => {
+    setCartItems((items) =>
+      items.filter(
+        (i) =>
+          !(
+            i.article.name === article.name &&
+            i.article.variantName === article.variantName
+          )
+      )
+    );
+  };
+
+  const incrementCart = (article: any) => {
+    setCartItems((items) =>
+      items.map((item) =>
+        item.article.name === article.name &&
+        item.article.variantName === article.variantName
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
+
+  const decrementCart = (article: any) => {
+    setCartItems((items) =>
+      items.map((item) =>
+        item.article.name === article.name &&
+        item.article.variantName === article.variantName &&
+        item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+    );
+  };
 
   useEffect(() => {
-    localStorage.setItem("cartCount", String(cartCount));
-  }, [cartCount]);
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const cartCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
     <>
@@ -67,8 +120,11 @@ const AppLayout: React.FC = () => {
       />
       <Outlet
         context={{
-          cartCount,
+          cartItems,
           addToCart,
+          removeFromCart,
+          incrementCart,
+          decrementCart,
           searchTerm,
           setSearchTerm,
           categories,

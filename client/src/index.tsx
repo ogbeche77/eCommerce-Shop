@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import AppLayout from "./Components/Layout/AppLayout";
 import ProductList from "./Components/ProductList/ProductList";
+import CheckoutPage from "./Components/CheckoutPage/CheckoutPage";
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
@@ -17,9 +18,7 @@ root.render(
           <Route
             path="/checkout"
             element={
-              <div style={{ padding: 40, fontSize: 24 }}>
-                Checkout Page (Warenkorb)
-              </div>
+              <CheckoutPage />
             }
           />
         </Route>

@@ -16,14 +16,8 @@ import {
 } from "./ProductList.styles";
 
 const ArticleList: React.FC = () => {
-  const {
-    cartCount,
-    addToCart,
-    searchTerm,
-    setSearchTerm,
-    categories,
-    setCategories,
-  } = useOutletContext<any>();
+  const { addToCart, searchTerm, setSearchTerm, categories, setCategories } =
+    useOutletContext<any>();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -103,11 +97,11 @@ const ArticleList: React.FC = () => {
     <ArticleCard
       article={article}
       key={`article-${idx}`}
-      onAddToCart={addToCart}
+      onAddToCart={() => addToCart(article)}
     />
   ));
 
-  // Pagination controls
+  // Pagination logic
   const totalPages = Math.ceil(articleCount / articlesPerPage);
   const startIdx = (page - 1) * articlesPerPage + 1;
   const endIdx = Math.min(page * articlesPerPage, articleCount);

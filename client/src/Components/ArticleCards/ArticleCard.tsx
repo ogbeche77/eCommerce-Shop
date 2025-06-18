@@ -22,7 +22,9 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onAddToCart }) => {
       <ArticlePrice>
         {formatter.format(article.prices.regular.value / 100)}
       </ArticlePrice>
-      <AddToCartButton role="button" onClick={onAddToCart}>Add to cart</AddToCartButton>
+      <AddToCartButton role="button" onClick={onAddToCart}>
+        Add to cart
+      </AddToCartButton>
     </ArticleCardContainer>
   );
 };
