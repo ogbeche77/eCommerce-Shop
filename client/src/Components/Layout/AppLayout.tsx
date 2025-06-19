@@ -3,7 +3,13 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { Category } from "../../types";
 import CartButton from "../CartButton/CartButton";
 import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
-import { Brand, Header, SearchInput } from "../ProductList/ProductList.styles";
+import {
+  Header,
+  ItemImage,
+  MainHeader,
+  SearchInput,
+} from "../ProductList/ProductList.styles";
+import homeimage from "./homeimage.png";
 
 const AppHeader: React.FC<{
   searchTerm: string;
@@ -17,11 +23,9 @@ const AppHeader: React.FC<{
     <Header>
       {showSearchAndHamburger && <HamburgerMenu categories={categories} />}
       <Link to="/" style={{ textDecoration: "none" }}>
-        <Brand as="span" style={{ cursor: "pointer", color: "#222" }}>
-          home24
-        </Brand>
+        <ItemImage src={homeimage} alt="" />
       </Link>
-      <div
+      <MainHeader
         style={{
           display: "flex",
           alignItems: "center",
@@ -31,14 +35,14 @@ const AppHeader: React.FC<{
       >
         {showSearchAndHamburger && (
           <SearchInput
-            placeholder={"Suchen Sie nach Artikeln..."}
+            placeholder={"Suchen "}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ minWidth: 220 }}
           />
         )}
         <CartButton count={cartCount} />
-      </div>
+      </MainHeader>
     </Header>
   );
 };

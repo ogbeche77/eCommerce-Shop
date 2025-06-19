@@ -14,6 +14,7 @@ import {
   MainContent,
   Page,
 } from "./ProductList.styles";
+import { PRODUCT_LIST_QUERY } from "./productListQuery";
 
 const ArticleList: React.FC = () => {
   const { addToCart, searchTerm, setSearchTerm, categories, setCategories } =
@@ -31,45 +32,11 @@ const ArticleList: React.FC = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            query: `{
-              categories: productLists(ids: "156126", locale: de_DE) {
-                name
-                articleCount
-                childrenCategories: childrenProductLists {
-                  list {
-                    name
-                    urlPath
-                  }
-                }
-                categoryArticles: articlesList(first: ${articlesPerPage}, offset: ${
-              (page - 1) * articlesPerPage
-            }) {
-                  articles {
-                    name
-                    variantName
-                    prices {
-                      currency
-                      regular {
-                        value
-                      }
-                    }
-                    images(
-                      format: WEBP
-                      maxWidth: 200
-                      maxHeight: 200
-                      limit: 1
-                    ) {
-                      path
-                    }
-                  }
-                }
-              }
-            }`,
+            query: PRODUCT_LIST_QUERY(articlesPerPage, page),
           }),
         });
         if (!response.ok) throw new Error("Network response was not ok");
         const result = await response.json();
-        console.log(result);
 
         setCategories(result.data.categories);
       } catch (err: any) {
@@ -83,7 +50,6 @@ const ArticleList: React.FC = () => {
 
   const articleCount = categories[0]?.articleCount || 0;
 
-  // Filter articles by search term
   const filteredArticles = (
     categories[0]?.categoryArticles?.articles || []
   ).filter(

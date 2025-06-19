@@ -21,6 +21,23 @@ export const Brand = styled("strong")({
   fontSize: "1.7rem",
   letterSpacing: "0.05em",
   fontWeight: 700,
+  cursor: "pointer",
+  color: "#222",
+});
+
+export const ItemImage = styled.img`
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f7f7f7;
+`;
+
+export const MainHeader = styled("div")({
+  display: "flex",
+  alignItems: "center",
+  flex: 1,
+  justifyContent: "flex-end",
 });
 
 export const SearchInput = styled("input")({
@@ -43,7 +60,7 @@ export const MainContent = styled("div")({
   display: "flex",
   flex: 1,
   minHeight: 0,
-  '@media (max-width: 900px)': {
+  "@media (max-width: 900px)": {
     flexDirection: "column",
   },
 });
@@ -54,7 +71,7 @@ export const Sidebar = styled("aside")({
   padding: "2rem 1.5rem",
   boxShadow: "2px 0 8px rgba(25, 118, 210, 0.03)",
   minHeight: "calc(100vh - 120px)",
-  '@media (max-width: 900px)': {
+  "@media (max-width: 900px)": {
     display: "none",
   },
   display: "block",
@@ -88,7 +105,7 @@ export const SidebarLink = styled("a")({
   padding: "0.3rem 0.5rem",
   display: "block",
   transition: "background 0.15s, color 0.15s",
-  ':hover': {
+  ":hover": {
     background: "#e3f2fd",
     color: "#1976d2",
   },
@@ -96,8 +113,8 @@ export const SidebarLink = styled("a")({
 
 export const Content = styled("main")({
   flex: 1,
-  padding: "2.5rem 2rem",
-  '@media (max-width: 900px)': {
+  padding: "2.5rem 2.5rem",
+  "@media (max-width: 900px)": {
     padding: "1.5rem 0.5rem",
   },
 });
@@ -125,7 +142,7 @@ export const Articles = styled("div")({
   gap: "1.5rem",
   justifyContent: "flex-start",
   alignItems: "flex-start",
-  '@media (max-width: 700px)': {
+  "@media (max-width: 700px)": {
     flexDirection: "column",
     gap: "1rem",
     alignItems: "center",
