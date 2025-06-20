@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Article } from "../../types";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Category } from "../../types";
 import CartButton from "../CartButton/CartButton";
@@ -49,7 +50,7 @@ const AppHeader: React.FC<{
 
 const AppLayout: React.FC = () => {
   const [cartItems, setCartItems] = useState<
-    { article: any; quantity: number }[]
+    { article: Article; quantity: number }[]
   >(() => {
     const stored = localStorage.getItem("cartItems");
     return stored ? JSON.parse(stored) : [];
@@ -57,7 +58,7 @@ const AppLayout: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const addToCart = (article: any) => {
+  const addToCart = (article: Article) => {
     setCartItems((items) => {
       const idx = items.findIndex(
         (i) =>
@@ -73,7 +74,7 @@ const AppLayout: React.FC = () => {
     });
   };
 
-  const removeFromCart = (article: any) => {
+  const removeFromCart = (article: Article) => {
     setCartItems((items) =>
       items.filter(
         (i) =>
@@ -85,7 +86,7 @@ const AppLayout: React.FC = () => {
     );
   };
 
-  const incrementCart = (article: any) => {
+  const incrementCart = (article: Article) => {
     setCartItems((items) =>
       items.map((item) =>
         item.article.name === article.name &&
@@ -96,7 +97,7 @@ const AppLayout: React.FC = () => {
     );
   };
 
-  const decrementCart = (article: any) => {
+  const decrementCart = (article: Article) => {
     setCartItems((items) =>
       items.map((item) =>
         item.article.name === article.name &&

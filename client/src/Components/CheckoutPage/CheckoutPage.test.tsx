@@ -46,9 +46,7 @@ describe("CheckoutPage", () => {
       };
     });
 
-    const { default: CheckoutPageWithEmptyCart } = await import(
-      "./CheckoutPage"
-    );
+    const { default: CheckoutPageWithEmptyCart } = await import("./CheckoutPage");
     render(<CheckoutPageWithEmptyCart />);
     expect(screen.getByText(/dein warenkorb ist leer/i)).toBeInTheDocument();
   });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Article } from "../../types";
+import { Article, Category } from "../../types";
 
 import ArticleCard from "../ArticleCards/ArticleCard";
 import Pagination from "../Pagination/Pagination";
@@ -16,9 +16,17 @@ import {
 } from "./ProductList.styles";
 import { PRODUCT_LIST_QUERY } from "./productListQuery";
 
+interface OutletContext {
+  addToCart: (article: Article) => void;
+  searchTerm: string;
+  setSearchTerm: (v: string) => void;
+  categories: Category[];
+  setCategories: (cats: Category[]) => void;
+}
+
 const ArticleList: React.FC = () => {
   const { addToCart, searchTerm, setSearchTerm, categories, setCategories } =
-    useOutletContext<any>();
+    useOutletContext<OutletContext>();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,8 +47,12 @@ const ArticleList: React.FC = () => {
         const result = await response.json();
 
         setCategories(result.data.categories);
-      } catch (err: any) {
+      } catch (err) {
+        if (err instanceof Error) {
         setError(err.message || "Error fetching data");
+        } else {
+          setError("Error fetching data");
+        }
       } finally {
         setLoading(false);
       }
@@ -52,11 +64,10 @@ const ArticleList: React.FC = () => {
 
   const filteredArticles = (
     categories[0]?.categoryArticles?.articles || []
-  ).filter(
-    (article: Article) =>
-      !searchTerm ||
-      article.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      article.variantName.toLowerCase().includes(searchTerm.toLowerCase())
+  ).filter((article: Article) =>
+    !searchTerm ||
+    article.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    article.variantName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const articles = filteredArticles.map((article: Article, idx: number) => (
