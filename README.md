@@ -1,4 +1,4 @@
-## home24 Frontend Tech Task
+## Ecommerce shop
 
 ## Table of contents
 

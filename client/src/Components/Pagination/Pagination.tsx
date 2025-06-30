@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  PaginationBtn,
   PaginationContainer,
+  PaginationBtn,
   PaginationInfo,
   PaginationRange,
 } from "./Pagination.styles";
