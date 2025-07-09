@@ -97,7 +97,9 @@ export const SidebarListItem = styled("li")({
   marginBottom: "0.7rem",
 });
 export const SidebarLink = styled("a")({
-  color: "#222",
+  cursor: "pointer",
+  color: "#666",
+  opacity: 0.7,
   textDecoration: "none",
   fontWeight: 500,
   fontSize: "1rem",

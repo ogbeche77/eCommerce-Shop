@@ -42,12 +42,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ categories }) => {
           <SidebarList>
             {childCats.map(({ name }, idx) => (
               <SidebarListItem key={name || idx}>
-                <SidebarLink
-                  as="span"
-                  style={{ cursor: "default", color: "#666", opacity: 0.7 }}
-                >
-                  {name}
-                </SidebarLink>
+                <SidebarLink>{name}</SidebarLink>
               </SidebarListItem>
             ))}
           </SidebarList>

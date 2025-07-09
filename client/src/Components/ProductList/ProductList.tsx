@@ -25,7 +25,7 @@ interface OutletContext {
 }
 
 const ArticleList: React.FC = () => {
-  const { addToCart, searchTerm, setSearchTerm, categories, setCategories } =
+  const { addToCart, searchTerm, categories, setCategories } =
     useOutletContext<OutletContext>();
 
   const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ const ArticleList: React.FC = () => {
         setCategories(result.data.categories);
       } catch (err) {
         if (err instanceof Error) {
-        setError(err.message || "Error fetching data");
+          setError(err.message || "Error fetching data");
         } else {
           setError("Error fetching data");
         }
@@ -58,16 +58,17 @@ const ArticleList: React.FC = () => {
       }
     };
     fetchData();
-  }, [page, articlesPerPage]);
+  }, [page, articlesPerPage, setCategories]);
 
   const articleCount = categories[0]?.articleCount || 0;
 
   const filteredArticles = (
     categories[0]?.categoryArticles?.articles || []
-  ).filter((article: Article) =>
-    !searchTerm ||
-    article.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    article.variantName.toLowerCase().includes(searchTerm.toLowerCase())
+  ).filter(
+    (article: Article) =>
+      !searchTerm ||
+      article.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.variantName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const articles = filteredArticles.map((article: Article, idx: number) => (
